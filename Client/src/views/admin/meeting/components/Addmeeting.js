@@ -84,7 +84,7 @@ const AddMeeting = (props) => {
             }
 
             if (leadsResponse.status >= 200 && leadsResponse.status < 300) {
-                setContactData(leadsResponse.data || []); // Ensure it's always an array
+                setLeadData(leadsResponse.data || []); // Ensure it's always an array
             } else {
                 toast.error("Failed to fetch leads");
             }
@@ -107,8 +107,10 @@ const AddMeeting = (props) => {
 
     const countriesWithEmailAsLabel = (values.related === "Contact" ? contactdata : leaddata)?.map((item) => ({
         ...item,
-        value: item._id,
-        label: values.related === "Contact" ? `${item.firstName} ${item.lastName}` : item.leadName,
+        value: item?._id || "unknown-value",
+        label: values.related === "Contact"
+            ? `${item?.fullName || "Unknown"} ${item?.email || ""}`
+            : item?.leadName || "Unknown",
     }));
 
     return (
